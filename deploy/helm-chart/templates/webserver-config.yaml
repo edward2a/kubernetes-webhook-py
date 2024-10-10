@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.baseName }}-webserver-config
+data:
+  default.conf: |
+    {
+        listen 8443 default_server ssl;
+        server_name {{ .Values.baseName }}.{{ .Values.baseName }}.svc;
+        ssl_certificate /var/ssl/tls.crt;
+        ssl_certificate_key /var/ssl/tls.key;
+        ssl_protocols TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        location / {
+            proxy_pass http://127.0.0.1:8081;
+        }
+    }

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.baseName }}
+  namespace: {{ .Values.baseName }}
+spec:
+  selector:
+    app: {{ .Values.baseName }}
+  ports:
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: 8443
+...

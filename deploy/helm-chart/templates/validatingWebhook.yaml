@@ -1,0 +1,29 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ .Values.baseName }}
+webhooks:
+- name: {{ .Values.baseName }}.{{ .Values.baseName }}.svc
+  failurePolicy: Ignore
+  sideEffects: NoneOnDryRun
+  timeoutSeconds: 5
+  admissionReviewVersions:
+  - v1
+  rules:
+  - operations:
+    - DELETE
+    apiGroups:
+    - "*"
+    apiVersions:
+    - v1
+    resources:
+    - pods
+    scope: Namespaced
+  clientConfig:
+    caBundle: {{ .Values.caCertBundle }}
+    service:
+      namespace: {{ .Values.baseName }}
+      name: {{ .Values.baseName }}
+      path: /validate
+...

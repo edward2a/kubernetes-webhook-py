@@ -1,0 +1,6 @@
+apiVersion: v2
+name: k8s-webhook-py
+version: 0.0.1
+appVersion: 0.0.1
+home: https://github.com/edward2a/kubernetes-webhook-py
+

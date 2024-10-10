@@ -21,7 +21,7 @@ webhooks:
     - pods
     scope: Namespaced
   clientConfig:
-    caBundle: {{ .Values.caCertBundle }}
+    caBundle: {{ .Values.caCertBundleB64 }}
     service:
       namespace: {{ .Values.baseName }}
       name: {{ .Values.baseName }}

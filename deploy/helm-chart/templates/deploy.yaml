@@ -31,20 +31,20 @@ spec:
         - readOnly: true
           mountPath: /etc/nginx/http.d
           name: webserver-config
-        #readinessProbe:
-        #  httpGet:
-        #    path: /health
-        #    scheme: HTTPS
-        #    port: 8443
-        #  intialDelaySeconds: 5
-        #  periodSeconds: 5
-        #livenessProbe:
-        #  httpGet:
-        #    path: /health
-        #    scheme: HTTPS
-        #    port: 8443
-        #  initialDelaySeconds: 5
-        #  periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            scheme: HTTPS
+            port: 8443
+          intialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            scheme: HTTPS
+            port: 8443
+          initialDelaySeconds: 5
+          periodSeconds: 10
       volumes:
       - name: server-certs
         secret:

@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.baseName }}
 data:
   default.conf: |
-    {
+    server {
         listen 8443 default_server ssl;
         server_name {{ .Values.baseName }}.{{ .Values.baseName }}.svc;
         ssl_certificate /var/ssl/tls.crt;

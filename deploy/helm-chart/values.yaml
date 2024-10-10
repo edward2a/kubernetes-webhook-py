@@ -5,3 +5,8 @@ image: registry.hub.docker.com/edward2a/k8s-webhook-py:latest
 # command:
 # - /bin/sleep
 # - infinity
+
+# Required:
+# caCertBundleB64:
+# tlsServerCertB64:
+# tlsServerKeyB64:

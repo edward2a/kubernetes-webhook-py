@@ -18,6 +18,9 @@ distinguished_name = req_distinguished_name
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = ${WEBHOOK_URL}
 EOF
 
 cat > "${OUTPUT_DIR}/openssl_client.cnf" <<EOF

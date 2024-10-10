@@ -32,7 +32,7 @@ def main():
     app.add_route('/health', HealthHandler())
     app.add_route('/validate', ValidatingWebhookHandler())
 
-    with make_server('0.0.0.0', 8080, app) as httpd:
+    with make_server('127.0.0.1', 8081, app) as httpd:
         httpd.serve_forever()
 
 if __name__ == '__main__':

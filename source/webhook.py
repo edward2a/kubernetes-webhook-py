@@ -16,12 +16,15 @@ class ValidatingWebhookHandler(object):
         """Process validation request and respond."""
         print(req.media)
         resp.media = {
-            "response": {
-                "allowed": True,
-                "uid": req.media["uid"],
-                "status": {"message": "default approval"}
+            'apiVersion': 'admission.k8s.io/v1',
+            'kind': 'AdmissionReview',
+            'response': {
+              'allowed': True,
+              'uid': req.media['request']['uid'],
+              'status': {'message': 'default approval'}
             }
         }
+
 
 
 def main():

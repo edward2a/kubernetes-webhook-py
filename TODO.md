@@ -1,0 +1,4 @@
+- Dry run
+- Network policy
+- Skip namespaces
+- Figure out how to do health checks with

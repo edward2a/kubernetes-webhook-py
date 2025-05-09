@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import falcon
 import json
 import ssl
@@ -31,16 +32,30 @@ class ValidatingWebhookHandler(object):
         resp.media = {'msg': 'Hello, world!'}
 
 
+def parse_args():
+    p = argparse.ArgumentParser()
+
+    p.add_argument('--bind-ip', default="0.0.0.0")
+    p.add_argument('--bind-port', default=8443, type=int)
+    p.add_argument('--tls-cert', default='/usr/local/k8s-webhook-py/cert.pem')
+    p.add_argument('--tls-key', default='/usr/local/k8s-webhook-py/key.pem')
+
+    return p.parse_args()
+
 def main():
+
+    args = parse_args()
+
     app = falcon.App()
     app.add_route('/health', HealthHandler())
     app.add_route('/validate', ValidatingWebhookHandler())
 
-    with make_server('127.0.0.1', 8081, app) as httpd:
+    with make_server(args.bind_ip, args.bind_port, app) as httpd:
         ctx = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-        ctx.load_cert_chain('source/cert.pem','source/key.pem')
+        ctx.load_cert_chain(args.tls_cert, args.tls_key)
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
+        print('INFO: Starting server...')
         httpd.socket = ctx.wrap_socket(
             httpd.socket,
             server_side=True)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import falcon
+import json
 import ssl
 
 from wsgiref.simple_server import make_server
@@ -15,7 +16,7 @@ class ValidatingWebhookHandler(object):
 
     def on_post(self, req, resp):
         """Process validation request and respond."""
-        print(req.media)
+        print(json.dumps(req.media, indent=2))
         resp.media = {
             'apiVersion': 'admission.k8s.io/v1',
             'kind': 'AdmissionReview',

@@ -24,6 +24,7 @@ spec:
         command:
 {{ toYaml .Values.command | indent 8 }}
         {{- end }}
+        args: ["--tls-cert", "/var/ssl/tls.crt", "--tls-key", "/var/ssl/tls.key"]
         volumeMounts:
         - readOnly: true
           mountPath: /var/ssl

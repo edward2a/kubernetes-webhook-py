@@ -1,12 +1,13 @@
 baseName: k8s-webhook-py
 image: registry.hub.docker.com/edward2a/k8s-webhook-py:latest
+selfGeneratedCerts: true
 
 # Override image entrypoint (command); string[]
 # command:
 # - /bin/sleep
 # - infinity
 
-# Required:
+# Required if selfGeneratedCerts is false:
 # caCertBundleB64:
 # tlsServerCertB64:
 # tlsServerKeyB64:

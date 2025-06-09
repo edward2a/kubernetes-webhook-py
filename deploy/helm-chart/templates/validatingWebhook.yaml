@@ -12,7 +12,9 @@ webhooks:
   - v1
   rules:
   - operations:
+    - CREATE
     - DELETE
+    - UPDATE
     apiGroups:
     - "*"
     apiVersions:

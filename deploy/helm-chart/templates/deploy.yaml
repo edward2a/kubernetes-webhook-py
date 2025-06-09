@@ -28,9 +28,6 @@ spec:
         - readOnly: true
           mountPath: /var/ssl
           name: server-certs
-        - readOnly: true
-          mountPath: /etc/nginx/http.d
-          name: webserver-config
         readinessProbe:
           httpGet:
             path: /health

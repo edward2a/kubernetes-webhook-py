@@ -1,3 +1,25 @@
+{{ if .Values.selfGeneratedCerts }}
+{{ $certName := printf "%s.%s.svc" .Values.baseName .Vales.baseName }}
+{{ $ca := genCA "webhook-ca" 1826 }}
+{{ $cert := genSignedCert $certName nil (list $certName) 1825 $ca }}
+{{ end }}
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: {{ .Values.baseName }}-server-cert
+  namespace: {{ .Values.baseName }}
+data:
+{{ if .Values.selfGeneratedCerts }}
+  tls.crt: {{ $cert.Cert | b64enc | quote }}
+  tls.key: {{ $cert.Key | b64enc | quote }}
+{{ else }}
+  tls.crt: {{ .Values.tlsServerCertB64 }}
+  tls.key: {{ .Values.tlsServerKeyB64 }}
+{{ end }}
+...
+
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -23,7 +45,11 @@ webhooks:
     - pods
     scope: Namespaced
   clientConfig:
+{{ if .Values.selfGeneratedCerts }}
+    caBundle: {{ $ca.Cert | b64enc | quote }}
+{{ else }}
     caBundle: {{ .Values.caCertBundleB64 }}
+{{ end }}
     service:
       namespace: {{ .Values.baseName }}
       name: {{ .Values.baseName }}

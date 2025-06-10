@@ -1,8 +1,6 @@
-{{ if .Values.selfGeneratedCerts }}
-{{ $certName := printf "%s.%s.svc" .Values.baseName .Vales.baseName }}
+{{ $certName := printf "%s.%s.svc" .Values.baseName .Values.baseName }}
 {{ $ca := genCA "webhook-ca" 1826 }}
 {{ $cert := genSignedCert $certName nil (list $certName) 1825 $ca }}
-{{ end }}
 ---
 apiVersion: v1
 kind: Secret
@@ -11,13 +9,13 @@ metadata:
   name: {{ .Values.baseName }}-server-cert
   namespace: {{ .Values.baseName }}
 data:
-{{ if .Values.selfGeneratedCerts }}
+{{- if .Values.selfGeneratedCerts }}
   tls.crt: {{ $cert.Cert | b64enc | quote }}
   tls.key: {{ $cert.Key | b64enc | quote }}
 {{ else }}
   tls.crt: {{ .Values.tlsServerCertB64 }}
   tls.key: {{ .Values.tlsServerKeyB64 }}
-{{ end }}
+{{- end }}
 ...
 
 ---
@@ -45,11 +43,11 @@ webhooks:
     - pods
     scope: Namespaced
   clientConfig:
-{{ if .Values.selfGeneratedCerts }}
+{{- if .Values.selfGeneratedCerts }}
     caBundle: {{ $ca.Cert | b64enc | quote }}
 {{ else }}
     caBundle: {{ .Values.caCertBundleB64 }}
-{{ end }}
+{{- end }}
     service:
       namespace: {{ .Values.baseName }}
       name: {{ .Values.baseName }}

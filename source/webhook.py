@@ -17,7 +17,7 @@ class ValidatingWebhookHandler(object):
 
     def on_post(self, req, resp):
         """Process validation request and respond."""
-        print(json.dumps(req.media, indent=2))
+        print(json.dumps(req.media, indent=2), flush=True)
         resp.media = {
             'apiVersion': 'admission.k8s.io/v1',
             'kind': 'AdmissionReview',
@@ -55,7 +55,7 @@ def main():
         ctx.load_cert_chain(args.tls_cert, args.tls_key)
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
-        print('INFO: Starting server...')
+        print('INFO: Starting server...', flush=True)
         httpd.socket = ctx.wrap_socket(
             httpd.socket,
             server_side=True)
